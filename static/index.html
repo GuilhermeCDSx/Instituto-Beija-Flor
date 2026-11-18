@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Beija-Flor - Gestao PWA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; font-family: Arial, sans-serif; }
+        .app-container { max-width: 480px; margin: 0 auto; padding: 16px; }
+        .brand-header { background-color: #0d233a; color: white; padding: 16px; border-radius: 8px; margin-bottom: 20px; }
+        .card-custom { border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 16px; }
+        .btn-touch { min-height: 44px; min-width: 44px; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- CABECALHO INSTITUCIONAL -->
+        <div class="brand-header text-center">
+            <h4>Instituto Beija-Flor</h4>
+            <small>PWA - Gestao de Frequencia e Estoque</small>
+        </div>
+
+        <!-- TELA 1: ENTRADA E MENU INICIAL -->
+        <div id="tela-login" class="card card-custom p-3 mb-4">
+            <h5 class="mb-3">Tela 1: Entrada Principal</h5>
+            <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                <input type="email" class="form-control" value="educador.carlos@ibf-colombo.org.br">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Senha</label>
+                <input type="password" class="form-control" value="********">
+            </div>
+            <button class="btn btn-primary w-100 btn-touch mb-3" onclick="mostrarTela('tela-chamada')">Entrar</button>
+            <hr>
+            <div class="text-muted small">Ola, Carlos Mendes (Educador)</div>
+            <button class="btn btn-outline-secondary btn-sm mt-2 w-100" onclick="mostrarTela('tela-cozinha')">Ir para Painel da Cozinha</button>
+        </div>
+
+        <!-- TELA 2: CHAMADA DIARIA POR TURNO -->
+        <div id="tela-chamada" class="card card-custom p-3 mb-4" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <button class="btn btn-outline-dark btn-sm btn-touch" onclick="mostrarTela('tela-login')">Voltar</button>
+                <span class="badge bg-success">Online</span>
+            </div>
+            <h5 class="mb-1">Chamada do Turno</h5>
+            <p class="text-muted small">Turno Manha - 17/11/2026</p>
+            
+            <div class="card p-2 mb-2 bg-light">
+                <div class="fw-bold">Lucas Oliveira (9 anos)</div>
+                <div class="btn-group mt-2" role="group">
+                    <button class="btn btn-outline-primary btn-sm btn-touch active">Presente</button>
+                    <button class="btn btn-outline-secondary btn-sm btn-touch">Ausente</button>
+                </div>
+            </div>
+
+            <div class="card p-2 mb-2 bg-light border-warning">
+                <div class="fw-bold">Mariana Souza (11 anos)</div>
+                <div class="text-danger small mb-1">Alerta: Intolerancia a lactose</div>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-outline-primary btn-sm btn-touch active">Presente</button>
+                    <button class="btn btn-outline-secondary btn-sm btn-touch">Ausente</button>
+                </div>
+            </div>
+
+            <div class="card p-2 mb-3 bg-light">
+                <div class="fw-bold">Pedro Henrique (8 anos)</div>
+                <div class="btn-group mt-2" role="group">
+                    <button class="btn btn-outline-primary btn-sm btn-touch">Presente</button>
+                    <button class="btn btn-outline-dark btn-sm btn-touch active">Ausente</button>
+                </div>
+            </div>
+
+            <button class="btn btn-success w-100 btn-touch" onclick="mostrarTela('tela-cozinha')">Concluir e Enviar Chamada</button>
+        </div>
+
+        <!-- TELA 3: PAINEL DA COZINHA E ESTOQUE -->
+        <div id="tela-cozinha" class="card card-custom p-3 mb-4" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <button class="btn btn-outline-dark btn-sm btn-touch" onclick="mostrarTela('tela-chamada')">Voltar</button>
+                <span class="badge bg-success">Sincronizado</span>
+            </div>
+            <h5 class="mb-1">Painel da Cozinha e Estoque</h5>
+            <p class="text-muted small">Turno Manha - Total: 42 Refeicoes</p>
+
+            <div class="alert alert-warning py-2 small">
+                <strong>Dieta Especial:</strong> Mariana Souza (Intolerancia a lactose)
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Estoque Prioritario</label>
+                <div class="p-2 border rounded bg-white small mb-2">
+                    Leite Integral 1L - 12 litros<br>
+                    <span class="text-danger">Critico: vence em 3 dias (20/11/2026)</span>
+                </div>
+            </div>
+
+            <div
