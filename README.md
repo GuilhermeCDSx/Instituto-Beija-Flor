@@ -62,3 +62,6 @@ instituto-beija-flor/
 - Autenticação segura por perfil com hash de senhas (Argon2id).
 - Mitigação de vulnerabilidades alinhada ao OWASP Top 10 (proteção contra SQL Injection e XSS).
 - Acessibilidade da interface em conformidade com as diretrizes WCAG 2.1 AA (contraste, áreas de toque mínimas e alertas redundantes por texto, símbolo e cor).
+
+- ## Contribuição
+Este repositório é exclusivo para fins acadêmicos.
