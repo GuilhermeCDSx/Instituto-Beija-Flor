@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instituto Beija-Flor - Gestao PWA</title>
+    <title>Instituto Beija-Flor - Gestão PWA</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: #f8f9fa; font-family: Arial, sans-serif; }
@@ -15,10 +15,10 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- CABECALHO INSTITUCIONAL -->
+        <!-- CABEÇALHO INSTITUCIONAL -->
         <div class="brand-header text-center">
             <h4>Instituto Beija-Flor</h4>
-            <small>PWA - Gestao de Frequencia e Estoque</small>
+            <small>PWA - Gestão de Frequência e Estoque</small>
         </div>
 
         <!-- TELA 1: ENTRADA E MENU INICIAL -->
@@ -34,45 +34,48 @@
             </div>
             <button class="btn btn-primary w-100 btn-touch mb-3" onclick="mostrarTela('tela-chamada')">Entrar</button>
             <hr>
-            <div class="text-muted small">Ola, Carlos Mendes (Educador)</div>
+            <div class="text-muted small">Olá, Carlos Mendes (Educador)</div>
             <button class="btn btn-outline-secondary btn-sm mt-2 w-100" onclick="mostrarTela('tela-cozinha')">Ir para Painel da Cozinha</button>
         </div>
 
-        <!-- TELA 2: CHAMADA DIARIA POR TURNO -->
+        <!-- TELA 2: CHAMADA DIÁRIA POR TURNO -->
         <div id="tela-chamada" class="card card-custom p-3 mb-4" style="display: none;">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <button class="btn btn-outline-dark btn-sm btn-touch" onclick="mostrarTela('tela-login')">Voltar</button>
                 <span class="badge bg-success">Online</span>
             </div>
             <h5 class="mb-1">Chamada do Turno</h5>
-            <p class="text-muted small">Turno Manha - 17/11/2026</p>
+            <p class="text-muted small">Turno Manhã - 17/11/2026</p>
             
-            <div class="card p-2 mb-2 bg-light">
+            <!-- ALUNO 1 -->
+            <div class="card p-2 mb-2 bg-light" id="aluno-1">
                 <div class="fw-bold">Lucas Oliveira (9 anos)</div>
-                <div class="btn-group mt-2" role="group">
-                    <button class="btn btn-outline-primary btn-sm btn-touch active">Presente</button>
-                    <button class="btn btn-outline-secondary btn-sm btn-touch">Ausente</button>
+                <div class="btn-group mt-2 w-100" role="group">
+                    <button type="button" class="btn btn-outline-success btn-touch active" onclick="marcarPresenca(1, 'presente')">Presente</button>
+                    <button type="button" class="btn btn-outline-danger btn-touch" onclick="marcarPresenca(1, 'ausente')">Ausente</button>
                 </div>
             </div>
 
-            <div class="card p-2 mb-2 bg-light border-warning">
+            <!-- ALUNO 2 (Com restrição) -->
+            <div class="card p-2 mb-2 bg-light border-warning" id="aluno-2" data-alergia="true" data-nome="Mariana Souza (Intolerância a lactose)">
                 <div class="fw-bold">Mariana Souza (11 anos)</div>
-                <div class="text-danger small mb-1">Alerta: Intolerancia a lactose</div>
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-primary btn-sm btn-touch active">Presente</button>
-                    <button class="btn btn-outline-secondary btn-sm btn-touch">Ausente</button>
+                <div class="text-danger small mb-1">Alerta: Intolerância a lactose</div>
+                <div class="btn-group w-100" role="group">
+                    <button type="button" class="btn btn-outline-success btn-touch active" onclick="marcarPresenca(2, 'presente')">Presente</button>
+                    <button type="button" class="btn btn-outline-danger btn-touch" onclick="marcarPresenca(2, 'ausente')">Ausente</button>
                 </div>
             </div>
 
-            <div class="card p-2 mb-3 bg-light">
+            <!-- ALUNO 3 -->
+            <div class="card p-2 mb-3 bg-light" id="aluno-3">
                 <div class="fw-bold">Pedro Henrique (8 anos)</div>
-                <div class="btn-group mt-2" role="group">
-                    <button class="btn btn-outline-primary btn-sm btn-touch">Presente</button>
-                    <button class="btn btn-outline-dark btn-sm btn-touch active">Ausente</button>
+                <div class="btn-group mt-2 w-100" role="group">
+                    <button type="button" class="btn btn-outline-success btn-touch" onclick="marcarPresenca(3, 'presente')">Presente</button>
+                    <button type="button" class="btn btn-outline-danger btn-touch active" onclick="marcarPresenca(3, 'ausente')">Ausente</button>
                 </div>
             </div>
 
-            <button class="btn btn-success w-100 btn-touch" onclick="mostrarTela('tela-cozinha')">Concluir e Enviar Chamada</button>
+            <button class="btn btn-success w-100 btn-touch" onclick="irParaCozinha()">Concluir e Enviar Chamada</button>
         </div>
 
         <!-- TELA 3: PAINEL DA COZINHA E ESTOQUE -->
@@ -82,18 +85,89 @@
                 <span class="badge bg-success">Sincronizado</span>
             </div>
             <h5 class="mb-1">Painel da Cozinha e Estoque</h5>
-            <p class="text-muted small">Turno Manha - Total: 42 Refeicoes</p>
+            <p class="text-muted small">Turno Manhã - Total: <span id="total-refeicoes">2</span> Refeições</p>
 
-            <div class="alert alert-warning py-2 small">
-                <strong>Dieta Especial:</strong> Mariana Souza (Intolerancia a lactose)
+            <div class="alert alert-warning py-2 small" id="alerta-dieta">
+                <strong>Dieta Especial:</strong> <span id="texto-dieta">Mariana Souza (Intolerância a lactose)</span>
             </div>
 
             <div class="mb-3">
-                <label class="form-label fw-bold">Estoque Prioritario</label>
+                <label class="form-label fw-bold">Estoque Prioritário</label>
                 <div class="p-2 border rounded bg-white small mb-2">
                     Leite Integral 1L - 12 litros<br>
-                    <span class="text-danger">Critico: vence em 3 dias (20/11/2026)</span>
+                    <span class="text-danger">Crítico: vence em 3 dias (20/11/2026)</span>
                 </div>
             </div>
 
-            <div
+            <button class="btn btn-primary w-100 btn-touch" onclick="alert('Dados do painel atualizados com sucesso!')">Atualizar Estoque</button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS DE INTERATIVIDADE -->
+    <script>
+        // Armazena o status de presença de cada aluno (1 = presente, 0 = ausente)
+        let statusAlunos = {
+            1: 'presente', // Lucas
+            2: 'presente', // Mariana
+            3: 'ausente'   // Pedro
+        };
+
+        function mostrarTela(idTela) {
+            document.getElementById('tela-login').style.display = 'none';
+            document.getElementById('tela-chamada').style.display = 'none';
+            document.getElementById('tela-cozinha').style.display = 'none';
+            
+            document.getElementById(idTela).style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function marcarPresenca(idAluno, status) {
+            statusAlunos[idAluno] = status;
+            const cardAluno = document.getElementById(`aluno-${idAluno}`);
+            const botoes = cardAluno.querySelectorAll('button');
+
+            // Alterna classes visuais dos botões
+            if (status === 'presente') {
+                botoes[0].className = 'btn btn-outline-success btn-touch active';
+                botoes[1].className = 'btn btn-outline-danger btn-touch';
+            } else {
+                botoes[0].className = 'btn btn-outline-success btn-touch';
+                botoes[1].className = 'btn btn-outline-danger btn-touch active';
+            }
+        }
+
+        function irParaCozinha() {
+            // Calcula quantas refeições serão necessárias com base nos alunos presentes
+            let totalPresentes = 0;
+            let restricoesAtivas = [];
+
+            for (let id in statusAlunos) {
+                if (statusAlunos[id] === 'presente') {
+                    totalPresentes++;
+                    // Verifica se o aluno presente tem restrição alimentar
+                    const elementoAluno = document.getElementById(`aluno-${id}`);
+                    if (elementoAluno && elementoAluno.dataset.alergia) {
+                        restricoesAtivas.push(elementoAluno.dataset.nome);
+                    }
+                }
+            }
+
+            // Atualiza o painel da cozinha dinamicamente
+            document.getElementById('total-refeicoes').innerText = totalPresentes;
+            
+            const alertaDieta = document.getElementById('alerta-dieta');
+            const textoDieta = document.getElementById('texto-dieta');
+
+            if (restricoesAtivas.length > 0) {
+                alertaDieta.style.display = 'block';
+                textoDieta.innerText = restricoesAtivas.join(', ');
+            } else {
+                alertaDieta.style.display = 'none';
+            }
+
+            // Vai para a tela da cozinha
+            mostrarTela('tela-cozinha');
+        }
+    </script>
+</body>
+</html>

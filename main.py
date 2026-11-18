@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 import models, schemas
 from database import engine, get_db
@@ -14,7 +15,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 def read_root():
-    return {"message": "API do Instituto Beija-Flor em funcionamento online."}
+    return FileResponse("static/index.html")
 
 @app.post("/assistidos/", response_model=dict)
 def criar_assistido(assistido: schemas.AssistidoCreate, db: Session = Depends(get_db)):
